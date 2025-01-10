@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "ImageAnnotation (Package)": {
+      "commandName": "MsixPackage"
+    },
+    "ImageAnnotation (Unpackaged)": {
+      "commandName": "Project"
+    }
+  }
+}

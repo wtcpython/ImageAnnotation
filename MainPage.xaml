@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<UserControl
+    x:Class="ImageAnnotation.MainPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:ImageAnnotation"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+    <Grid
+        ColumnSpacing="5"
+        Margin="8">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="Auto"/>
+        </Grid.ColumnDefinitions>
+        <CheckBox
+            Name="annoBox"
+            Content="启用标注"
+            Click="ChangeAnnoStatus"
+            HorizontalAlignment="Center"/>
+
+        <Grid Name="background" Grid.Column="1">
+            <FlipView
+                x:Name="Gallery"
+                SelectionChanged="ImageChanged"
+                Background="Transparent">
+                <FlipView.ItemTemplate>
+                    <DataTemplate x:DataType="BitmapImage">
+                        <Grid>
+                            <Image
+                                x:Name="currentImage"
+                                Source="{x:Bind Mode=OneTime}"
+                                Stretch="Uniform"
+                                PointerPressed="ImagePointerPressed"
+                                PointerMoved="ImagePointerMoved"
+                                PointerReleased="ImagePointerReleased"/>
+                        </Grid>
+                    </DataTemplate>
+                </FlipView.ItemTemplate>
+            </FlipView>
+            <Canvas>
+                <Rectangle
+                    x:Name="annotation"
+                    Stroke="Red"
+                    StrokeThickness="3"
+                    Visibility="Collapsed"
+                    Width="200"
+                    Height="100" />
+            </Canvas>
+        </Grid>
+
+        <Grid Grid.Column="2">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <ComboBox
+                x:Name="tagBox"
+                IsEditable="True" TextSubmitted="AddNewImageTag" MinWidth="80"
+                SelectionChanged="SelectedTagChanged"/>
+
+            <TextBlock
+                x:Name="statusText"
+                Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+
+            <Button
+                Content="保存"
+                Click="SaveAnnotation"
+                VerticalAlignment="Bottom" HorizontalAlignment="Center"
+                Grid.Row="2"/>
+        </Grid>
+    </Grid>
+</UserControl>
