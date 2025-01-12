@@ -6,6 +6,7 @@ using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Media.Imaging;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
 using Windows.Foundation;
@@ -16,7 +17,7 @@ namespace ImageAnnotation
     public sealed partial class MainPage : UserControl
     {
         private List<Annotation> annotations = [];
-        private List<BitmapImage> images = [];
+        private ObservableCollection<BitmapImage> images = [];
         private List<FileInfo> fileInfos = [];
 
         private bool isDrawing = false;
@@ -214,6 +215,25 @@ namespace ImageAnnotation
             CheckAndSetState();
 
             annotations[gindex] = anno;
+        }
+
+        private async void DeleteImage(object sender, RoutedEventArgs e)
+        {
+            int index = Gallery.SelectedIndex;
+            FileInfo deleteInfo = fileInfos[index];
+
+            string text = deleteInfo.FullName;
+            deleteText.Text = text;
+
+            ContentDialogResult result = await deleteDialog.ShowAsync();
+            if (result == ContentDialogResult.Primary)
+            {
+                Gallery.SelectedIndex = (index + 1) % images.Count;
+                annotations.RemoveAt(index);
+                images.RemoveAt(index);
+                deleteInfo.Delete();
+                fileInfos.RemoveAt(index);
+            }
         }
     }
 }

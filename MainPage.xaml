@@ -54,26 +54,44 @@
             </Canvas>
         </Grid>
 
-        <Grid Grid.Column="2">
+        <Grid Grid.Column="2" RowSpacing="10">
             <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
             <ComboBox
                 x:Name="tagBox"
-                IsEditable="True" TextSubmitted="AddNewImageTag" MaxWidth="80"
+                IsEditable="True" TextSubmitted="AddNewImageTag"
+                HorizontalAlignment="Center"
+                Width="80"
                 SelectionChanged="SelectedTagChanged"/>
+            <Button Content="删除图片" Click="DeleteImage" Grid.Row="1" HorizontalAlignment="Center"/>
 
             <TextBlock
                 x:Name="statusText"
-                Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                Grid.Row="2" VerticalAlignment="Center" HorizontalAlignment="Center"/>
 
             <Button
                 Content="保存"
                 Click="SaveAnnotation"
                 VerticalAlignment="Bottom" HorizontalAlignment="Center"
-                Grid.Row="2"/>
+                Grid.Row="3"/>
         </Grid>
+        <ContentDialog
+            Name="deleteDialog"
+            CloseButtonText="取消"
+            PrimaryButtonText="确定">
+            <ContentDialog.Content>
+                <TextBlock LineHeight="40">
+                    <Run>确定要删除此文件？</Run>
+                    <LineBreak />
+                    <Run x:Name="deleteText"/>
+                    <LineBreak />
+                    <Run Foreground="Red">此操作不可逆！</Run>
+                </TextBlock>
+            </ContentDialog.Content>
+        </ContentDialog>
     </Grid>
 </UserControl>
