@@ -19,7 +19,7 @@ namespace ImageAnnotation
         private List<BitmapImage> images = [];
         private List<FileInfo> fileInfos = [];
 
-        private bool isDrawing;
+        private bool isDrawing = false;
 
         private Project currentProject;
         private Annotation anno;
@@ -29,8 +29,6 @@ namespace ImageAnnotation
             this.InitializeComponent();
             currentProject = project;
             Gallery.SelectedIndex = 0;
-            tagBox.SelectedIndex = 0;
-            SetState(false);
             this.Loaded += (s, e) => InitProject(project, isNewProject);
         }
 
@@ -56,7 +54,8 @@ namespace ImageAnnotation
             }
             Gallery.ItemsSource = images;
             tagBox.ItemsSource = project.tokens;
-            anno = annotations[0];
+
+            CheckAndSetState();
         }
 
         private void ImagePointerPressed(object sender, PointerRoutedEventArgs e)
@@ -117,24 +116,17 @@ namespace ImageAnnotation
                 anno.Width = endPercentX - startPercentX;
                 anno.Height = endPercentY - startPercentY;
 
-                int index = tagBox.SelectedIndex;
-
-                if (anno.StartLocalPoint.X > 0 && anno.StartLocalPoint.Y > 0 && index >= 0)
+                if (CheckAndSetState())
                 {
-                    SetState(true);
+                    anno.ImageTagIndex = tagBox.SelectedIndex;
                     annotations[Gallery.SelectedIndex] = anno;
-                    annotations[Gallery.SelectedIndex].IsValid = true;
                 }
             }
         }
 
         private void ChangeAnnoStatus(object sender, RoutedEventArgs e)
         {
-            if (annoBox.IsChecked == true)
-            {
-                isDrawing = true;
-            }
-            else
+            if (annoBox.IsChecked == false)
             {
                 isDrawing = false;
                 annotation.Visibility = Visibility.Collapsed;
@@ -172,21 +164,27 @@ namespace ImageAnnotation
             MainWindow window = App.GetWindowForElement(this);
             window.SetTitleFileName(fileInfos[index].FullName);
             annotation.Visibility = Visibility.Collapsed;
-            SetState(annotations[index].IsValid);
             anno = annotations[index];
+            CheckAndSetState();
         }
 
-        private void SetState(bool state)
+        private bool CheckAndSetState()
         {
-            if (state)
+            int index = tagBox.SelectedIndex;
+
+            if (anno.StartLocalPoint.X > 0 && anno.StartLocalPoint.Y > 0 && index >= 0)
             {
                 statusText.Text = "标注成功";
                 statusText.Foreground = new SolidColorBrush(Colors.Green);
+                anno.IsValid = true;
+                return true;
             }
             else
             {
                 statusText.Text = "内容未标注";
                 statusText.Foreground = new SolidColorBrush(Colors.Red);
+                anno.IsValid = false;
+                return false;
             }
         }
 
@@ -201,9 +199,10 @@ namespace ImageAnnotation
             if (!currentProject.tokens.Contains(text))
             {
                 currentProject.tokens.Add(text);
+
+                int index = currentProject.tokens.IndexOf(text);
+                SetImageTag(index, text);
             }
-            int index = currentProject.tokens.IndexOf(text);
-            SetImageTag(index, text);
         }
 
         private void SetImageTag(int index, string text)
@@ -211,7 +210,7 @@ namespace ImageAnnotation
             int gindex = Gallery.SelectedIndex;
             anno.ImageTag = text;
             anno.ImageTagIndex = index;
-            anno.IsValid = true;
+            CheckAndSetState();
 
             annotations[gindex] = anno;
         }
