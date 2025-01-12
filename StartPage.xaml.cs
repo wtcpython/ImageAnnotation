@@ -61,9 +61,9 @@ namespace ImageAnnotation
 
                     Project project = new()
                     {
-                        folder = folder.Path,
-                        name = name,
-                        tokens = tokens
+                        Folder = folder.Path,
+                        Name = name,
+                        Tokens = tokens
                     };
                     OpenProject(project, true);
                 }

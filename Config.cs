@@ -21,10 +21,10 @@ namespace ImageAnnotation
 
     public class Project
     {
-        public string folder {  get; set; }
-        public string name { get; set; }
+        public string Folder {  get; set; }
+        public string Name { get; set; }
 
-        public ObservableCollection<string> tokens { get; set; }
+        public ObservableCollection<string> Tokens { get; set; }
     }
     public class Config
     {

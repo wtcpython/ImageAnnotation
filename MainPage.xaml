@@ -17,6 +17,7 @@
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="Auto"/>
         </Grid.ColumnDefinitions>
+        <TextBlock Name="projLabel" TextTrimming="CharacterEllipsis" MaxWidth="80"/>
         <CheckBox
             Name="annoBox"
             Content="启用标注"
@@ -61,7 +62,7 @@
             </Grid.RowDefinitions>
             <ComboBox
                 x:Name="tagBox"
-                IsEditable="True" TextSubmitted="AddNewImageTag" MinWidth="80"
+                IsEditable="True" TextSubmitted="AddNewImageTag" MaxWidth="80"
                 SelectionChanged="SelectedTagChanged"/>
 
             <TextBlock

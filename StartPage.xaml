@@ -18,8 +18,8 @@
             <ListView.ItemTemplate>
                 <DataTemplate x:DataType="local:Project">
                     <controls:SettingsCard
-                        Header="{x:Bind folder}"
-                        Description="{x:Bind name}"
+                        Header="{x:Bind Folder}"
+                        Description="{x:Bind Name}"
                         Margin="0,10,0,10">
                         <Button
                             Content="删除"

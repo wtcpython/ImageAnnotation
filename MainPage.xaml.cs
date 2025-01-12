@@ -28,6 +28,7 @@ namespace ImageAnnotation
         {
             this.InitializeComponent();
             currentProject = project;
+            projLabel.Text = project.Name;
             Gallery.SelectedIndex = 0;
             this.Loaded += (s, e) => InitProject(project, isNewProject);
         }
@@ -38,7 +39,7 @@ namespace ImageAnnotation
             {
                 App.config.Projects.Add(project);
             }
-            string[] files = Directory.GetFiles(project.folder);
+            string[] files = Directory.GetFiles(project.Folder);
 
             foreach (string file in files)
             {
@@ -53,7 +54,7 @@ namespace ImageAnnotation
                 }
             }
             Gallery.ItemsSource = images;
-            tagBox.ItemsSource = project.tokens;
+            tagBox.ItemsSource = project.Tokens;
 
             CheckAndSetState();
         }
@@ -196,11 +197,11 @@ namespace ImageAnnotation
         private void AddNewImageTag(ComboBox sender, ComboBoxTextSubmittedEventArgs args)
         {
             string text = args.Text;
-            if (!currentProject.tokens.Contains(text))
+            if (!currentProject.Tokens.Contains(text))
             {
-                currentProject.tokens.Add(text);
+                currentProject.Tokens.Add(text);
 
-                int index = currentProject.tokens.IndexOf(text);
+                int index = currentProject.Tokens.IndexOf(text);
                 SetImageTag(index, text);
             }
         }
