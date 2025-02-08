@@ -12,7 +12,7 @@ namespace ImageAnnotation
 
             ExtendsContentIntoTitleBar = true;
             SetTitleBar(AppTitleBar);
-            AppTitle.Text = AppWindow.Title = App.AppTitle;
+            AppTitleBar.Title = AppWindow.Title = App.AppTitle;
             App.SetBackdrop(this);
             AppWindow.TitleBar.PreferredHeightOption = Microsoft.UI.Windowing.TitleBarHeightOption.Tall;
         }
